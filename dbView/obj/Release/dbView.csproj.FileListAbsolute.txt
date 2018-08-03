@@ -10,6 +10,7 @@ C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\bin\Release\
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\bin\Release\System.Data.SQLite.xml
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\bin\Release\System.Data.SQLite.dll.config
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\bin\Release\EntityFramework.xml
+C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\obj\Release\dbView.csprojResolveAssemblyReference.cache
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\obj\Release\dbView.DbViewWindow.resources
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\obj\Release\dbView.Properties.Resources.resources
 C:\Users\Kennys\Documents\Visual Studio 2017\Projects\dbView\dbView\obj\Release\dbView.csproj.GenerateResource.Cache

@@ -86,8 +86,10 @@
     <Compile Include="DbView.Designer.cs">
       <DependentUpon>DbView.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowFilters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryCreator.cs" />
     <EmbeddedResource Include="DbView.resx">
       <DependentUpon>DbView.cs</DependentUpon>
     </EmbeddedResource>

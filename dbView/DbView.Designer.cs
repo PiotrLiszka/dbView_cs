@@ -48,7 +48,6 @@
             this.brandCombo = new System.Windows.Forms.ComboBox();
             this.modelCombo = new System.Windows.Forms.ComboBox();
             this.yearFromCombo = new System.Windows.Forms.ComboBox();
-            this.filterButton = new System.Windows.Forms.Button();
             this.yearToLabel = new System.Windows.Forms.Label();
             this.yearToCombo = new System.Windows.Forms.ComboBox();
             this.resetButton = new System.Windows.Forms.Button();
@@ -78,7 +77,7 @@
             this.tabControl1.Location = new System.Drawing.Point(228, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(642, 433);
+            this.tabControl1.Size = new System.Drawing.Size(678, 433);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
@@ -88,13 +87,14 @@
             this.carsPage.Location = new System.Drawing.Point(4, 22);
             this.carsPage.Name = "carsPage";
             this.carsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.carsPage.Size = new System.Drawing.Size(634, 407);
+            this.carsPage.Size = new System.Drawing.Size(670, 407);
             this.carsPage.TabIndex = 0;
             this.carsPage.Text = "Cars";
             this.carsPage.UseVisualStyleBackColor = true;
             // 
             // carGrid
             // 
+            this.carGrid.AllowUserToAddRows = false;
             this.carGrid.AllowUserToDeleteRows = false;
             this.carGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -103,7 +103,7 @@
             this.carGrid.Location = new System.Drawing.Point(6, 6);
             this.carGrid.Name = "carGrid";
             this.carGrid.ReadOnly = true;
-            this.carGrid.Size = new System.Drawing.Size(622, 395);
+            this.carGrid.Size = new System.Drawing.Size(658, 395);
             this.carGrid.TabIndex = 0;
             // 
             // trucksPage
@@ -119,6 +119,7 @@
             // 
             // truckGrid
             // 
+            this.truckGrid.AllowUserToAddRows = false;
             this.truckGrid.AllowUserToDeleteRows = false;
             this.truckGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -143,6 +144,7 @@
             // 
             // bikeGrid
             // 
+            this.bikeGrid.AllowUserToAddRows = false;
             this.bikeGrid.AllowUserToDeleteRows = false;
             this.bikeGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -167,6 +169,7 @@
             // 
             // scooterGrid
             // 
+            this.scooterGrid.AllowUserToAddRows = false;
             this.scooterGrid.AllowUserToDeleteRows = false;
             this.scooterGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -192,7 +195,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(873, 439);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(909, 439);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -209,10 +212,9 @@
             this.tableLayoutPanel1.Controls.Add(this.brandCombo, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.modelCombo, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.yearFromCombo, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.filterButton, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.yearToLabel, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.yearToCombo, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.resetButton, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.resetButton, 1, 5);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
@@ -287,6 +289,7 @@
             this.modelCombo.Name = "modelCombo";
             this.modelCombo.Size = new System.Drawing.Size(121, 21);
             this.modelCombo.TabIndex = 6;
+            this.modelCombo.TextChanged += new System.EventHandler(this.modelCombo_TextChanged);
             // 
             // yearFromCombo
             // 
@@ -297,17 +300,7 @@
             this.yearFromCombo.Name = "yearFromCombo";
             this.yearFromCombo.Size = new System.Drawing.Size(121, 21);
             this.yearFromCombo.TabIndex = 7;
-            // 
-            // filterButton
-            // 
-            this.filterButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.filterButton.Location = new System.Drawing.Point(112, 189);
-            this.filterButton.Name = "filterButton";
-            this.filterButton.Size = new System.Drawing.Size(75, 23);
-            this.filterButton.TabIndex = 4;
-            this.filterButton.Text = "Filter";
-            this.filterButton.UseVisualStyleBackColor = true;
-            this.filterButton.Click += new System.EventHandler(this.filterButton_Click);
+            this.yearFromCombo.TextChanged += new System.EventHandler(this.yearFromCombo_TextChanged);
             // 
             // yearToLabel
             // 
@@ -328,13 +321,14 @@
             this.yearToCombo.Name = "yearToCombo";
             this.yearToCombo.Size = new System.Drawing.Size(121, 21);
             this.yearToCombo.TabIndex = 9;
+            this.yearToCombo.TextChanged += new System.EventHandler(this.yearToCombo_TextChanged);
             // 
             // resetButton
             // 
             this.resetButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.resetButton.Location = new System.Drawing.Point(3, 189);
+            this.resetButton.Location = new System.Drawing.Point(101, 189);
             this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(74, 23);
+            this.resetButton.Size = new System.Drawing.Size(97, 23);
             this.resetButton.TabIndex = 10;
             this.resetButton.Text = "Reset";
             this.resetButton.UseVisualStyleBackColor = true;
@@ -344,7 +338,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 464);
+            this.ClientSize = new System.Drawing.Size(934, 464);
             this.Controls.Add(this.tableLayoutPanel5);
             this.Name = "DbViewWindow";
             this.Text = "dbView";
@@ -382,7 +376,6 @@
         private System.Windows.Forms.Label brandLabel;
         private System.Windows.Forms.Label modelLabel;
         private System.Windows.Forms.Label yearFromLabel;
-        private System.Windows.Forms.Button filterButton;
         private System.Windows.Forms.ComboBox brandCombo;
         private System.Windows.Forms.ComboBox modelCombo;
         private System.Windows.Forms.ComboBox yearFromCombo;

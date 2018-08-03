@@ -14,73 +14,62 @@ namespace dbView
     public partial class DbViewWindow : Form
     {
         Database sqlite;
-        private string brandFilter = "";
-        private string modelFilter = "";
-        private string yearFromFilter = "";
-        private string yearToFilter = "";
-        private int getTabId = 0;
-        private bool modelComboEnabled = false;
+        MainWindowFilters filters;
 
-        public string BrandFilter { get => brandFilter; set => brandFilter = value; }
-        public string ModelFilter { get => modelFilter; set => modelFilter = value; }
-        public string YearFromFilter { get => yearFromFilter; set => yearFromFilter = value; }
-        public string YearToFilter { get => yearToFilter; set => yearToFilter = value; }
-        public int GetTabId { get => getTabId; set => getTabId = value; }
-        public bool ModelComboEnabled { get => modelComboEnabled; set => modelComboEnabled = value; }
+        private string brandFilterValue = "";
+        private string modelFilterValue = "";
+        private string yearFromFilterValue = "";
+        private string yearToFilterValue = "";
+        private int getActiveTabId = 0;
+
+        public string BrandFilterValue { get => brandFilterValue; set => brandFilterValue = value; }
+        public string ModelFilterValue { get => modelFilterValue; set => modelFilterValue = value; }
+        public string YearFromFilterValue { get => yearFromFilterValue; set => yearFromFilterValue = value; }
+        public string YearToFilterValue { get => yearToFilterValue; set => yearToFilterValue = value; }
+        public int GetActiveTabId { get => getActiveTabId; set => getActiveTabId = value; }
 
         public DbViewWindow()
         {
             InitializeComponent();
             sqlite = new Database();
-            sqlite.DbViewVechiles(this);        //Viewing initial table
-            sqlite.GetFilters(this);            //Setting initial filters
+            filters = new MainWindowFilters();
+            sqlite.DbViewVechiles(this);                                    //Viewing initial table
+            filters.SetBrandFilter(this);                                   //Setting initial filters
+            filters.SetYearFilter(this);
         }
 
-        public void ViewOnList(DataTable dt)
+        public void ViewOnWindow(DataTable dt)
         {
-            if (GetTabId == 0)
+            if (GetActiveTabId == 0)
                 this.carGrid.DataSource = dt;
-            else if (GetTabId == 1)
+            else if (GetActiveTabId == 1)
                 this.truckGrid.DataSource = dt;
-            else if (GetTabId == 2)
+            else if (GetActiveTabId == 2)
                 this.bikeGrid.DataSource = dt;
-            else if (GetTabId == 3)
+            else if (GetActiveTabId == 3)
                 this.scooterGrid.DataSource = dt;
         }
 
-
-
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            GetTabId = this.tabControl1.SelectedIndex;
-            this.brandCombo.Text = "";
-            brandFilter = "";
-            modelFilter = "";
-            yearFromFilter = "";
-            yearToFilter = "";
+            GetActiveTabId = this.tabControl1.SelectedIndex;
+            brandFilterValue = "";
+            modelFilterValue = "";
+            yearFromFilterValue = "";
+            yearToFilterValue = "";
             sqlite.DbViewVechiles(this);
-            sqlite.GetFilters(this);
+            filters.SetModelFilter(this);
+            filters.SetBrandFilter(this);
+            filters.SetYearFilter(this);
         }
 
-        public void AddFilters(List<string> brand,  List<string> year)
+        public void AddBrandFilter(List<string> brand)
         {
             this.brandCombo.Items.Clear();
-            this.yearFromCombo.Items.Clear();
-            this.yearToCombo.Items.Clear();
-
             this.brandCombo.Items.Add("");
-            this.yearFromCombo.Items.Add("");
-            this.yearToCombo.Items.Add("");
 
             foreach (string s in brand)
                 this.brandCombo.Items.Add(s);
-            
-            for(int i = Int32.Parse(year[0]); i<= Int32.Parse(year[1]); ++i)
-            {
-                this.yearFromCombo.Items.Add(i);
-                this.yearToCombo.Items.Add(i);
-            }
-
         }
 
         public void AddModelFilter(List<string> model)
@@ -92,42 +81,83 @@ namespace dbView
                 this.modelCombo.Items.Add(s);
         }
 
-
-        private void filterButton_Click(object sender, EventArgs e)
+        public void AddYearFilter(List<string> year)
         {
-            brandFilter = this.brandCombo.Text.ToString();
-            modelFilter = this.modelCombo.Text.ToString();
-            yearToFilter = this.yearFromCombo.Text.ToString();
-            yearFromFilter = this.yearToCombo.Text.ToString();
-            if (YearToFilter != "" && YearFromFilter != "")
+            this.yearFromCombo.Items.Clear();
+            this.yearToCombo.Items.Clear();
+            this.yearFromCombo.Items.Add("");
+            this.yearToCombo.Items.Add("");
+            if (Int32.TryParse(year[0], out int res) && Int32.TryParse(year[1], out res))
             {
-                if (Int32.Parse(yearFromFilter) >= Int32.Parse(yearToFilter))
-                    sqlite.DbViewVechiles(this);
+                for (int i = Int32.Parse(year[0]); i <= Int32.Parse(year[1]); ++i)
+                {
+                    this.yearFromCombo.Items.Add(i);
+                    this.yearToCombo.Items.Add(i);
+                }
+            }
+        }
+
+        private bool YearValidation()
+        {
+            if (YearToFilterValue != "" && YearFromFilterValue != "")
+            {
+                if (Int32.Parse(yearFromFilterValue) <= Int32.Parse(yearToFilterValue))
+                    return true;
                 else
                 {
                     MessageBox.Show("Year From cannot be lower than Year To.");
-                    return;
+                    return false;
                 }
             }
+            return true;
 
-            sqlite.DbViewVechiles(this);
         }
 
 
         private void brandCombo_TextChanged(object sender, EventArgs e)
         {
-            BrandFilter = this.brandCombo.Text;
+            BrandFilterValue = this.brandCombo.Text;
             if (brandCombo.Text.ToString() == "")
             {
                 modelCombo.Enabled = false;
                 this.modelCombo.Text = "";
             }
             else
+            {
                 modelCombo.Enabled = true;
+                this.modelCombo.Text = "";
+            }
+            this.yearFromCombo.Text = "";
+            this.yearToCombo.Text = "";
 
-
-            sqlite.GetModelFilter(this);
+            filters.SetModelFilter(this);
+            filters.SetYearFilter(this);
+            sqlite.DbViewVechiles(this);
         }
+
+        private void modelCombo_TextChanged(object sender, EventArgs e)
+        {
+            ModelFilterValue = this.modelCombo.Text;
+            this.yearFromCombo.Text = "";
+            this.yearToCombo.Text = "";
+            filters.SetYearFilter(this);
+            sqlite.DbViewVechiles(this);
+        }
+
+        private void yearFromCombo_TextChanged(object sender, EventArgs e)
+        {
+            YearFromFilterValue = this.yearFromCombo.Text;
+            if (YearValidation())
+                sqlite.DbViewVechiles(this);
+        }
+
+        private void yearToCombo_TextChanged(object sender, EventArgs e)
+        {
+            YearToFilterValue = this.yearToCombo.Text;
+            if (YearValidation())
+                sqlite.DbViewVechiles(this);
+        }
+
 
         private void resetButton_Click(object sender, EventArgs e)
         {
@@ -135,13 +165,15 @@ namespace dbView
             modelCombo.Text = "";
             yearFromCombo.Text = "";
             yearToCombo.Text = "";
-            brandFilter = "";
-            modelFilter = "";
-            yearFromFilter = "";
-            yearToFilter = "";
+            brandFilterValue = "";
+            modelFilterValue = "";
+            yearFromFilterValue = "";
+            yearToFilterValue = "";
 
             sqlite.DbViewVechiles(this);
         }
+
+
     }
 
 
